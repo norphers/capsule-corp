@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+
+    <header th:replace="layout/layout :: header"></header>
+
+    <div class="container py-4">
+
+        <div class="card bg-light">
+            <div class="card-header" th:text="${title}"></div>
+            <div class="card-body">
+
+                <h4 class="card-title">
+                    <a class="btn btn-primary" th:href="@{'/invoice/form/' + ${customer.id}}" th:text="'create invoice'"></a>
+                </h4>
+
+                <img th:if="${#strings.length(customer.photo) > 0}" class="img-thumbnail rounded float-left" style="max-width: 25%;" th:src="@{'/uploads/' + ${customer.photo}}" th:alt="${customer.photo}" />
+
+                <ul class="list-group">
+                    <li class="list-group-item active" th:text="${customer.name}"></li>
+                    <li class="list-group-item" th:text="${customer.lastName}"></li>
+                    <li class="list-group-item" th:text="${customer.email}"></li>
+                    <li class="list-group-item" th:text="${customer.createAt}"></li>
+                </ul>
+
+                <div th:if="${#lists.isEmpty(customer.invoice)}" class="alert alert-info my-4" th:text="'There are no invoices relationed with this customer' + ${customer.name} + ' ' + ${customer.lastName}"></div>
+
+                <table th:if="${not #lists.isEmpty(customer.invoices)}" class="table table-bordered table-striped my-4">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>page</th>
+                            <th>description</th>
+                            <th>date</th>
+                            <th>total</th>
+                            <th>view</th>
+                            <th>delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="invoice: ${customer.invoices}">
+                            <td th:text="${invoice.id}"></td>
+                            <td th:text="${invoice.description}"></td>
+                            <td th:text="${invoice.createAt}"></td>
+                            <td th:text="${invoice.total}"></td>
+                            <td>
+                                <a class="btn btn-primary btn-sm" th:href="@{'/invoice/view/' + ${invoice.id}}" th:text="'detalle'"></a>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger btn-sm" th:href="@{'/invoice/delete/' + ${invoice.id}}" th:text="'delete'" onclick="return confirm('Are you shure?');"></a>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+
+    <footer th:replace="layout/layout :: footer"></footer>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+
+    <header th:replace="layout/layout :: header"></header>
+
+    <div class="container py-4">
+
+        <div class="card bg-light">
+            <div class="card-header" th:text="${title}"></div>
+            <div class="card-body">
+
+                <h4 class="card-title">
+                    <a th:href="@{/employee-form}" class="btn btn-primary">Create Employee</a>
+                </h4>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>name</th>
+                            <th>last name</th>
+                            <th>email</th>
+                            <th>username</th>
+                            <th>role</th>
+                            <th>date</th>
+                            <th>edit</th>
+                            <th>delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="employee: ${employees}">
+                            <td>
+                                <a class="btn btn-primary btn-xs" th:href="@{/employee-view/} + ${employee.id}" th:text="${employee.id}"></a>
+                            </td>
+                            <td th:text="${employee.name}"></td>
+                            <td th:text="${employee.lastName}"></td>
+                            <td th:text="${employee.email}"></td>
+                            <td th:text="${employee.username}"></td>
+                            <td th:text="${employee.createDate}"></td>
+                            <td>
+                                <a class="btn btn-success btn-sm" th:href="@{'/product/form/' + ${employee.id}}" th:text="'create product'"></a>
+                            </td>
+                            <td>
+                                <a class="btn btn-primary btn-sm" th:href="@{/employee-form/} + ${employee.id}" th:text="'edit'"></a>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger btn-sm" th:href="@{/employee-delete/} + ${employee.id}" th:text="'delete'" onclick="return confirm('Are you shure?');"></a>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+                <nav th:replace="paginator-nav :: paginator"></nav>
+            </div>
+        </div>
+
+    </div>
+
+    <footer th:replace="layout/layout :: footer"></footer>
+</body>
+
+</html>
